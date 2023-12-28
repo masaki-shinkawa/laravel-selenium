@@ -1,0 +1,326 @@
+:root {
+  --bg-image: url("/assets/150x150.png");
+  --bg-color: rgb(190, 223, 200);
+  --text-color-holiday: rgb(216, 68, 72);
+  --text-color-saturday: rgb(4, 164, 234);
+  --text-size-xs: 10px;
+  --text-size-sm: 12px;
+  --text-size-md: 16px;
+  --text-size-lg: 20px;
+  --font-family: "Noto Serif JP";
+
+  --calendar-width: calc(100% - 20px - 20px);
+  --calendar-height: calc(100% - 46px - 20px - 33px);
+  --calendar-margin: 46px 20px 53px;
+  --calendar-bg-color: rgba(255, 255, 255, .85);
+  --calendar-bg-color-event: rgb(28, 138, 0);
+  --calendar-text-color-event: rgb(255, 255, 255);
+
+  --footer-bg-color: rgba(0, 0, 0, .3);
+  --footer-text-color: rgb(255, 255, 255);
+
+  --location-text-color-address: rgb(102, 102, 102);
+}
+
+@font-face {
+  font-family: 'Noto Sans JP';
+  font-style: normal;
+  font-weight: 400;
+  src: url('http://localhost:8080/assets/NotoSansJP-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Noto Sans JP';
+  font-style: normal;
+  font-weight: 700;
+  src: url('http://localhost:8080/assets/NotoSansJP-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Noto Serif JP';
+  font-style: normal;
+  font-weight: 400;
+  src: url('http://localhost:8080/assets/NotoSerifJP-Regular.otf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Noto Serif JP';
+  font-style: normal;
+  font-weight: 700;
+  src: url('http://localhost:8080/assets/NotoSerifJP-Bold.otf') format('truetype');
+}
+
+body {
+  font-family: var(--font-family), sans-serif;
+}
+
+body,
+h1 {
+  margin: 0;
+}
+
+ul,
+li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+dd,
+dl,
+dt {
+  margin: 0;
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 16px;
+  gap: 16px;
+}
+
+.container {
+  position: relative;
+  height: 500px;
+  width: 500px;
+  background-color: var(--bg-color);
+  display: flex;
+  font-size: var(--text-size-md);
+
+  &__image {
+    background-image: var(--bg-image);
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: var(--calendar-width);
+      height: var(--calendar-height);
+      margin: var(--calendar-margin);
+      backdrop-filter: blur(3px);
+    }
+  }
+}
+
+.contents {
+  display: flex;
+  justify-content: center;
+  width: var(--calendar-width);
+  height: var(--calendar-height);
+  margin: var(--calendar-margin);
+  background-color: var(--calendar-bg-color);
+  opacity: var(--calendar-bg-opacity);
+  filter: drop-shadow(0px 0px 20px rgba(0, 0, 0, 0.12));
+
+  &__logo {
+    position: absolute;
+    transform: translateY(-50%);
+  }
+}
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+
+  &__year-month {
+    display: flex;
+    align-items: flex-end;
+    margin-top: 10px;
+    margin-left: 16px;
+
+    &>*:nth-child(3) {
+      padding-left: 4px;
+    }
+
+    &--number {
+      font-size: var(--text-size-lg);
+      font-weight: 600;
+      line-height: 28px;
+    }
+
+    &--unit {
+      font-size: var(--text-size-md);
+      font-weight: 300;
+    }
+  }
+
+  &__weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, calc(100% / 7));
+    text-align: center;
+    margin-top: 8px;
+    font-size: var(--text-size-sm);
+    font-weight: 600;
+    line-height: 16px;
+  }
+
+  &__weekday {
+    &--red {
+      color: var(--text-color-holiday);
+    }
+
+    &--blue {
+      color: var(--text-color-saturday);
+    }
+  }
+
+  &__days {
+    display: grid;
+    grid-template-columns: repeat(7, calc(100% / 7));
+    grid-template-rows: repeat(6, 1fr);
+    height: 100%;
+    margin-top: 4px;
+  }
+
+  &__cell {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    font-size: var(--text-size-xs);
+    font-weight: 600;
+    padding-top: 2px;
+    line-height: 14px;
+
+    &:not(:nth-child(7n)) {
+      border: solid rgba(0, 0, 0, .12);
+      border-width: 1px 1px 0 0;
+    }
+
+    &:nth-child(7n) {
+      border: solid rgba(0, 0, 0, .12);
+      border-width: 1px 0 0 0;
+      color: var(--text-color-saturday);
+    }
+
+    &:nth-child(7n-6) {
+      color: var(--text-color-holiday);
+    }
+  }
+
+  &__day {
+    &--outside {
+      opacity: .4;
+    }
+  }
+
+  &__event {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 2px 2px 4px;
+    justify-content: space-between;
+
+    &--box {
+      background-color: var(--calendar-bg-color-event);
+      color: var(--calendar-text-color-event);
+      padding: 4px 2px;
+      border-radius: 2px;
+      line-height: 12px;
+
+      &--box>span {
+        margin: 2px;
+        width: 100%;
+        display: block;
+        overflow: hidden;
+      }
+    }
+
+    &:has(&--text) &--box {
+      white-space: nowrap;
+      overflow: hidden;
+      padding: 2px;
+    }
+
+    &--text {
+      line-height: 12px;
+      text-align: right;
+      color: black;
+    }
+  }
+
+  &__footer {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 33px;
+    width: 100%;
+    bottom: 0;
+    background-color: var(--footer-bg-color);
+    backdrop-filter: blur(3px);
+    text-align: right;
+    color: var(--footer-text-color);
+
+    &--text {
+      padding-right: 24px;
+    }
+  }
+}
+
+.location {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  padding: 20px;
+
+  &__header {
+    font-size: var(--text-size-lg);
+  }
+
+  &__contents {
+    margin-top: 20px;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__detail {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    &--icon {
+      min-width: 16px;
+      height: 16px;
+      display: block;
+    }
+
+    &--text {
+      font-size: var(--text-size-md);
+      font-weight: 600;
+      line-height: 22.4px;
+    }
+
+    &--holiday {
+      color: var(--text-color-holiday);
+    }
+
+    &--saturday {
+      color: var(--text-color-saturday);
+    }
+
+    &--address {
+      font-size: var(--text-size-sm);
+      color: var(--location-text-color-address);
+      line-height: 16.8px;
+      min-height: 34px;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+  }
+}
